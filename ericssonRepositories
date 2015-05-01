@@ -1,0 +1,3 @@
+[repositories]
+artifactory-staging: https://arm.mo.ca.am.ericsson.se/artifactory/proj-jnkserv-staging/
+nexus-central-maven: https://eiffel.lmera.ericsson.se/nexus/content/groups/public
