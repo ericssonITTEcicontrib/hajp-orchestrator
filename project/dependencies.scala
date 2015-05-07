@@ -17,6 +17,6 @@ object Dependencies {
     "org.fusesource" % "sigar" % "1.6.4"
   )
 
-  var hajp = Seq("com.ericsson.jenkinsci.hajp" % "hajp-common" % "1.0.7")
+  var hajp = Seq("com.ericsson.jenkinsci.hajp" % "hajp-common" % "1.0.10")
 
 }
