@@ -2,6 +2,10 @@ organization in ThisBuild := "com.ericsson.jenkinsci.hajp"
 
 scalaVersion in ThisBuild := "2.11.5"
 
+// ivy 2 has a problem with snapshot updates, it does not correctly resolve them unless and until we force maven repo to be
+// first in resolver chain like this. := puts it on top of the sequence basically.
+resolvers in ThisBuild := ("Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository") +: resolvers.value
+
 publishMavenStyle := true
 
 publishArtifact in Test := false
