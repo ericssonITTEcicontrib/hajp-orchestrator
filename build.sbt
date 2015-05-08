@@ -2,21 +2,44 @@ organization in ThisBuild := "com.ericsson.jenkinsci.hajp"
 
 scalaVersion in ThisBuild := "2.11.5"
 
-// default credentials needed to resolve dependencies for compilation
-// in order to publish, you require credentials that have write access.
-// These can be placed in ~/.sbt/0.13/plugins/credentials.sbt
+publishMavenStyle := true
 
-// ivy 2 has a problem with snapshot updates, it does not correctly resolve them unless and until we force maven repo to be
-// first in resolver chain like this. := puts it on top of the sequence basically.
-resolvers in ThisBuild := ("Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository") +: resolvers.value
+publishArtifact in Test := false
 
+pomIncludeRepository := { _ => false }
+
+pomExtra := (
+  <url>https://github.com/ericssonITTEcicontrib/hajp-orchestrator</url>
+  <licenses>
+      <license>
+        <name>MIT License</name>
+        <url>http://www.opensource.org/licenses/mit-license.php</url>
+      </license>
+  </licenses>
+   <developers>
+      <developer>
+        <name>Daniel Yinanc</name>
+        <organization>Ericsson</organization>
+        <organizationUrl>http://www.ericsson.com</organizationUrl>
+      </developer>
+      <developer>
+        <name>Scott Hebert</name>
+        <organization>Ericsson</organization>
+        <organizationUrl>http://www.ericsson.com</organizationUrl>
+      </developer>
+    </developers>
+    <scm>
+      <connection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-orchestrator.git</connection>
+      <developerConnection>scm:git:git@github.com:ericssonITTEcicontrib/hajp-orchestrator.git</developerConnection>
+      <url>git@github.com:ericssonITTEcicontrib/hajp-orchestrator.git</url>
+    </scm>)
 
 publishTo := {
-  val artifactoryURL = "https://arm.mo.ca.am.ericsson.se/artifactory/"
+  val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
-    Some("snapshots" at artifactoryURL + "proj-jnkserv-dev-local")
+    Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Some("releases" at artifactoryURL + "proj-jnkserv-staging-local")
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
 }
 
 //sbt release plugin default settings
