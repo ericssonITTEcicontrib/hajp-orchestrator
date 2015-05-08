@@ -5,13 +5,11 @@ scalaVersion in ThisBuild := "2.11.5"
 // default credentials needed to resolve dependencies for compilation
 // in order to publish, you require credentials that have write access.
 // These can be placed in ~/.sbt/0.13/plugins/credentials.sbt
-credentials in ThisBuild += Credentials("Artifactory Realm", "arm.mo.ca.am.ericsson.se", "artread", "\\{DESede\\}YNtyA/TMlbuQjz/BlYj9Pw==")
 
 // ivy 2 has a problem with snapshot updates, it does not correctly resolve them unless and until we force maven repo to be
 // first in resolver chain like this. := puts it on top of the sequence basically.
 resolvers in ThisBuild := ("Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository") +: resolvers.value
 
-resolvers in ThisBuild ++= Seq("Artifactory Staging ITTE" at "https://arm.mo.ca.am.ericsson.se/artifactory/proj-jnkserv-staging-local/")
 
 publishTo := {
   val artifactoryURL = "https://arm.mo.ca.am.ericsson.se/artifactory/"
