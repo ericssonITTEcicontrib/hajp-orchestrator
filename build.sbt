@@ -1,6 +1,14 @@
+import com.typesafe.sbt.SbtNativePackager
+import sbtrelease.ReleaseStateTransformations._
+import sbtrelease.ReleaseStep
+
 organization in ThisBuild := "com.ericsson.jenkinsci.hajp"
 
-scalaVersion in ThisBuild := "2.11.5"
+scalaVersion in ThisBuild := "2.11.6"
+
+enablePlugins(SbtNativePackager)
+
+enablePlugins(UniversalPlugin)
 
 // ivy 2 has a problem with snapshot updates, it does not correctly resolve them unless and until we force maven repo to be
 // first in resolver chain like this. := puts it on top of the sequence basically.
@@ -114,6 +122,23 @@ artifact in(Compile, assembly) := {
 }
 
 addArtifact(artifact in(Compile, assembly), assembly)
+
+ReleaseKeys.releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  runTest,
+  setReleaseVersion,
+  commitReleaseVersion,
+  tagRelease,
+  ReleaseStep(action = Command.process("dist", _)),
+  ReleaseStep(action = Command.process("publishSigned", _)),
+  setNextVersion,
+  commitNextVersion,
+  ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+  pushChanges
+)
+
 
 
 
