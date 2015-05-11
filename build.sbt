@@ -131,7 +131,6 @@ ReleaseKeys.releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  ReleaseStep(action = Command.process("dist", _)),
   ReleaseStep(action = Command.process("publishSigned", _)),
   setNextVersion,
   commitNextVersion,
