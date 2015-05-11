@@ -10,6 +10,8 @@ enablePlugins(SbtNativePackager)
 
 enablePlugins(UniversalPlugin)
 
+useGpg := true
+
 // ivy 2 has a problem with snapshot updates, it does not correctly resolve them unless and until we force maven repo to be
 // first in resolver chain like this. := puts it on top of the sequence basically.
 resolvers in ThisBuild := ("Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository") +: resolvers.value
