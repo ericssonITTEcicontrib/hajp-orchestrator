@@ -1,8 +1,7 @@
 #!/bin/bash -e
 
-PROJECT=proj_hajp
-REGISTRY=armdocker.rnd.ericsson.se
-SUBPROJECT=orchestrator
+PROJECT=hajp-orchestrator
+REGISTRY=docker.io/ericssonitte
 VERSIONSTR=$(head -n 1 ../version.sbt)
 SNAPSHOTBEGIN=`echo $VERSIONSTR | grep -b -o '-' | awk 'BEGIN {FS=":"}{print $1}' | bc`
 SNAPSHOTBEGIN=$((SNAPSHOTBEGIN - 25))
@@ -51,34 +50,19 @@ export https_proxy=
 if [ $1 == "buildRelease" ]
   then
     ./packageOrchestrator.sh release
-    docker build --no-cache=true -t $REGISTRY/$PROJECT/$SUBPROJECT:$RELEASEVERSION .
-    rm -f *.jar
-fi
-
-if [ $1 == "buildSnapshot" ]
-  then
-    ./packageOrchestrator.sh snapshot
-    docker build --no-cache=true -t $REGISTRY/$PROJECT/$SUBPROJECT:SNAPSHOT .
+    docker build --no-cache=true -t $REGISTRY/$PROJECT:$RELEASEVERSION .
     rm -f *.jar
 fi
 
 if [ $1 == "runRelease" ]
   then
-   	docker run -p 9000:9000 $REGISTRY/$PROJECT/$SUBPROJECT:$RELEASEVERSION
-fi
-
-if [ $1 == "runSnapshot" ]
-  then
-   	docker run -p 9000:9000 $REGISTRY/$PROJECT/$SUBPROJECT:SNAPSHOT
+   	docker run -p 9000:9000 $REGISTRY/$PROJECT:$RELEASEVERSION
 fi
 
 if [ $1 == "pushRelease" ]
   then
-    docker push $REGISTRY/$PROJECT/$SUBPROJECT:$RELEASEVERSION
-fi
-
-if [ $1 == "pushSnapshot" ]
-  then
-    docker push $REGISTRY/$PROJECT/$SUBPROJECT:SNAPSHOT
+    docker tag -f $REGISTRY/$PROJECT:$RELEASEVERSION $REGISTRY/$PROJECT:latest
+    docker push $REGISTRY/$PROJECT:$RELEASEVERSION
+    docker push $REGISTRY/$PROJECT:latest
 fi
 
