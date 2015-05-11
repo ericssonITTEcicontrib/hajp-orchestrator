@@ -9,8 +9,6 @@ fi
 
 set -e
 
-USERNAME=artread
-PASSWD="\{DESede\}YNtyA/TMlbuQjz/BlYj9Pw=="
 
 VERSIONSTR=$(head -n 1 ../version.sbt)
 SNAPSHOTBEGIN=`echo $VERSIONSTR | grep -b -o '-' | awk 'BEGIN {FS=":"}{print $1}' | bc`
@@ -46,8 +44,7 @@ else
   RELEASEVERSION=$VERSION
 fi
 
-RELEASEURL=https://arm.mo.ca.am.ericsson.se/artifactory/simple/proj-jnkserv-staging-local/com/ericsson/jenkinsci/hajp/hajp-orchestrator_2.11/$RELEASEVERSION/hajp-orchestrator_2.11-$RELEASEVERSION-assembly.jar
-SNAPSHOTURL=https://arm.mo.ca.am.ericsson.se/artifactory/simple/proj-jnkserv-dev-local/com/ericsson/jenkinsci/hajp/hajp-orchestrator_2.11/$SNAPSHOTVERSION-SNAPSHOT/hajp-orchestrator_2.11-$SNAPSHOTVERSION-SNAPSHOT-assembly.jar
+RELEASEURL=https://oss.sonatype.org/content/repositories/releases/com/ericsson/jenkinsci/hajp/hajp-orchestrator_2.11/$RELEASEVERSION/hajp-orchestrator_2.11-$RELEASEVERSION-assembly.jar
 
 echo $SNAPSHOTURL
 
@@ -56,9 +53,3 @@ if [ $1 == "release" ]
   then
     wget --no-proxy -O hajp-orchestrator.jar --user=$USERNAME --password=$PASSWD $RELEASEURL
 fi
-
-if [ $1 == "snapshot" ]
-  then
-    wget --no-proxy -O hajp-orchestrator.jar --user=$USERNAME --password=$PASSWD $SNAPSHOTURL
-fi
-
