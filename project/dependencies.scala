@@ -10,7 +10,8 @@ object Dependencies {
 
   val common = Seq(
     "com.typesafe.akka" %% "akka-actor" % Version.akka,
-    "com.typesafe.akka" %% "akka-cluster" % Version.akka
+    "com.typesafe.akka" %% "akka-cluster" % Version.akka,
+    "net.codingwell" %% "scala-guice" % "4.0.0-beta5"
   )
 
   val metrics = Seq(
