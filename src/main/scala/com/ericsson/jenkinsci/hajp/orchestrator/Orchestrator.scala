@@ -2,10 +2,10 @@ package com.ericsson.jenkinsci.hajp.orchestrator
 
 import java.util
 
-import akka.actor.ActorSystem
-import com.ericsson.jenkinsci.hajp.orchestrator.orchestrator.OrchestratorBackend
-import com.typesafe.config.{ConfigValueFactory, ConfigFactory}
-import collection.JavaConversions._
+import com.ericsson.jenkinsci.hajp.orchestrator.akkaguice.AkkaModule
+import com.google.inject.AbstractModule
+import com.typesafe.config.{Config, ConfigFactory}
+
 import scala.collection.JavaConversions._
 
 /**
@@ -27,10 +27,9 @@ object Orchestrator extends App {
   "akka.cluster.seed-nodes" -> seedNodes
   )
 
-  val system = ActorSystem("HajpCluster", (ConfigFactory parseMap properties)
-    .withFallback(ConfigFactory.load())
-  )
+  val config: Config = (ConfigFactory parseMap properties).withFallback(ConfigFactory.load())
 
-  // Deploy actors and services
-  OrchestratorBackend startOn system
+  val module:AbstractModule = new AkkaModule("HajpCluster", config)
+
+  OrchestratorRunner.run(module)
 }
