@@ -68,7 +68,8 @@ lazy val orchestrator = (project in file("."))
       "-Djava.library.path=./sigar",
       "-Xms128m", "-Xmx1024m"),
     // this enables custom javaOptions
-    fork in run := true
+    fork in run := true,
+    fork in test := false
   )
 
 //
